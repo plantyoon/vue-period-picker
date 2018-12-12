@@ -1,4 +1,4 @@
-# vue-term-picker
+# vue-period-picker
 
 ## Project setup
 ```
