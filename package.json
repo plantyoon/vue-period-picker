@@ -1,6 +1,6 @@
 {
   "name": "vue-period-picker",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": ".",
   "main": "./dist/PeriodPicker.common.js",
   "unpkg": "./dist/PeriodPicker.umd.min.js",

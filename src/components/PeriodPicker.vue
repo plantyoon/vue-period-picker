@@ -67,7 +67,7 @@
         </div>
       </div>
       <button>Back</button>
-      <button>Confirm</button>
+      <button @click="addPeriod">Confirm</button>
     </div>
   </div>
 </template>
@@ -115,6 +115,8 @@ export default {
       startDate: null,
       endDate: null,
       clickStack: 0,
+      tempTime: null,
+
     };
   },
   mounted() {
@@ -124,6 +126,15 @@ export default {
   methods: {
     pickDate(moment) {
       if (!this.isTargetMonth(moment)) this.setTargetDate(moment);
+
+      if (this.tempTime) {
+        const hour = this.tempTime.hour();
+        const minute = this.tempTime.minute();
+        moment.set({
+          hour,
+          minute,
+        });
+      }
 
       if (this.mode === 'day') {
         moment.set({
@@ -142,7 +153,7 @@ export default {
       if (this.mode === 'range') {
         if (this.clickStack % 2 === 0) {
           this.startDate = moment;
-          this.endDate = null;
+          this.endDate = moment;
         }
         if (this.clickStack % 2 === 1) {
           this.endDate = moment;
@@ -153,6 +164,7 @@ export default {
     },
     setPicker() {
       const now = moment();
+      this.tempTime = now.clone();
       this.pickDate(now);
     },
     setMode(name) {
@@ -206,6 +218,7 @@ export default {
       } else {
         targetMoment.set({ [targetType]: tempValue });
       }
+      this.tempTime = targetMoment.clone();
     },
     correctTime(e, targetMoment, targetType) {
       const { target } = e;
@@ -220,6 +233,13 @@ export default {
         targetMoment.set({ [targetType]: computedValue });
         target.value = targetMoment.format('mm');
       }
+    },
+    addPeriod() {
+      this.value.push({
+        type: this.mode,
+        v1: this.startDate,
+        v2: this.endDate,
+      })
     }
   },
   computed: {
